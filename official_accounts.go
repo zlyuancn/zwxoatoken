@@ -27,7 +27,7 @@ const (
     GrantType = "client_credential"
 )
 
-type AssessToken struct {
+type AccessToken struct {
     Errcode     int    `json:"errcode"`
     Errmsg      string `json:"errmsg"`
     AccessToken string `json:"access_token"`
@@ -48,7 +48,7 @@ type Signature struct {
 }
 
 // 获取公众号accesst_token
-func GetAccessToken(appid, secret string) (*AssessToken, error) {
+func GetAccessToken(appid, secret string) (*AccessToken, error) {
     url := fmt.Sprintf(AccessTokenUri, GrantType, appid, secret)
     resp, err := DefaultClient.Get(url)
     if err != nil {
@@ -56,7 +56,7 @@ func GetAccessToken(appid, secret string) (*AssessToken, error) {
     }
     defer resp.Body.Close()
 
-    out := new(AssessToken)
+    out := new(AccessToken)
     if err := json.NewDecoder(resp.Body).Decode(out); err != nil {
         return nil, zerrors.Wrap(err, "收到的数据无法解析")
     }
